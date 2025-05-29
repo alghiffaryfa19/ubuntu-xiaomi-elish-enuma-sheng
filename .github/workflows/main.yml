@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 20
     strategy:
             matrix:
-                version: [6.14]
+                version: [6.13.0]
     steps:
       - uses: actions/checkout@v4
 
@@ -22,103 +22,97 @@ jobs:
       - name: Upload linux.deb
         uses: actions/upload-artifact@v4
         with:
-          name: linux-oneplus-aston_${{ matrix.version }}
-          path: ${{ github.workspace }}/linux-oneplus-aston.deb
+          name: linux-xiaomi-elish_${{ matrix.version }}
+          path: ${{ github.workspace }}/linux-xiaomi-elish.deb
 
-      - name: Upload 16G RAM boot.img
+      - name: Upload CSOT boot.img
         uses: actions/upload-artifact@v4
         with:
-          name: boot-oneplus-aston_${{ matrix.version }}_16G_A15.img
-          path: ${{ github.workspace }}/boot16G.img
+          name: boot-xiaomi-elish_${{ matrix.version }}_csot.img
+          path: ${{ github.workspace }}/boot_csot.img
 
-      - name: Upload 12G RAM boot.img
+      - name: Upload BOE boot.img
         uses: actions/upload-artifact@v4
         with:
-          name: boot-oneplus-aston_${{ matrix.version }}_12G_A15.img
-          path: ${{ github.workspace }}/boot12G.img
+          name: boot-xiaomi-elish_${{ matrix.version }}_boe.img
+          path: ${{ github.workspace }}/boot_boe.img
 
-      - name: Upload 16G RAM A14 boot.img
-        uses: actions/upload-artifact@v4
-        with:
-          name: boot-oneplus-aston_${{ matrix.version }}_16G_A14.img
-          path: ${{ github.workspace }}/boot16G_A14.img
+  # rootfs:
+  #   runs-on: ubuntu-24.04-arm
+  #   timeout-minutes: 20
+  #   strategy:
+  #           matrix:
+  #               desktop: [ubuntu-desktop]
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Install Dependencies
+  #       run: sudo apt update && sudo apt install unzip bash tar git wget dpkg
 
-  rootfs:
-    runs-on: ubuntu-24.04-arm
-    timeout-minutes: 20
-    strategy:
-            matrix:
-                desktop: [ubuntu-desktop]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Dependencies
-        run: sudo apt update && sudo apt install unzip bash tar git wget dpkg
+  #     - name: Build rootfs
+  #       run: sudo sh aston-rootfs_build.sh ${{ matrix.desktop }} ${{ github.workspace }}
 
-      - name: Build rootfs
-        run: sudo sh aston-rootfs_build.sh ${{ matrix.desktop }} ${{ github.workspace }}
+  #     - name: Upload rootfs.img
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: between_${{ matrix.desktop }}
+  #         path: rootfs.7z
+  #         compression-level: 0
 
-      - name: Upload rootfs.img
-        uses: actions/upload-artifact@v4
-        with:
-          name: between_${{ matrix.desktop }}
-          path: rootfs.7z
-          compression-level: 0
+  # alsa:
+  #   needs: rootfs
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 2
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-  alsa:
-    needs: rootfs
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Pack Alsa Use Case Configuration into .deb
+  #       run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-xiaomi-elish
 
-      - name: Pack Alsa Use Case Configuration into .deb
-        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-oneplus-aston
+  #     - name: Upload alsa.deb
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: alsa-xiaomi-elish
+  #         path: ${{ github.workspace }}/alsa-xiaomi-elish.deb
 
-      - name: Upload alsa.deb
-        uses: actions/upload-artifact@v4
-        with:
-          name: alsa-oneplus-aston
-          path: ${{ github.workspace }}/alsa-oneplus-aston.deb
+  # firmware-a15:
+  #   needs: rootfs
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 2
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-  firmware-a15:
-    needs: rootfs
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Install Dependencies
+  #       run: sudo apt update && sudo apt install gcc make git wget dpkg
 
-      - name: Install Dependencies
-        run: sudo apt update && sudo apt install gcc make git wget dpkg
+  #     - name: Squash firmwares to .mbn
+  #       run: sudo sh aston-fw_squasher-a15.sh ${{ github.workspace }}
 
-      - name: Squash firmwares to .mbn
-        run: sudo sh aston-fw_squasher-a15.sh ${{ github.workspace }}
+  #     - name: Upload firmware.deb
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: firmware-xiaomi-elish-a15
+  #         path: ${{ github.workspace }}/firmware-xiaomi-elish-a15.deb
 
-      - name: Upload firmware.deb
-        uses: actions/upload-artifact@v4
-        with:
-          name: firmware-oneplus-aston-a15
-          path: ${{ github.workspace }}/firmware-oneplus-aston-a15.deb
+  # firmware-a14:
+  #   needs: rootfs
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 2
+  #   steps:
+  #     - uses: actions/checkout@v4
 
-  firmware-a14:
-    needs: rootfs
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    steps:
-      - uses: actions/checkout@v4
+  #     - name: Install Dependencies
+  #       run: sudo apt update && sudo apt install gcc make git wget dpkg
 
-      - name: Install Dependencies
-        run: sudo apt update && sudo apt install gcc make git wget dpkg
+  #     - name: Squash firmwares to .mbn
+  #       run: sudo sh aston-fw_squasher-a14.sh ${{ github.workspace }}
 
-      - name: Squash firmwares to .mbn
-        run: sudo sh aston-fw_squasher-a14.sh ${{ github.workspace }}
+  #     - name: Upload firmware.deb
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: firmware-xiaomi-elish-a14
+  #         path: ${{ github.workspace }}/firmware-xiaomi-elish-a14.deb
 
-      - name: Upload firmware.deb
-        uses: actions/upload-artifact@v4
-        with:
-          name: firmware-oneplus-aston-a14
-          path: ${{ github.workspace }}/firmware-oneplus-aston-a14.deb
-
-  rootfs-packager:
+  # rootfs-packager:
     needs: [kernel, alsa, firmware-a14, firmware-a15]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
@@ -134,13 +128,13 @@ jobs:
           pattern: between_${{ matrix.desktop }}*   
       - uses: actions/download-artifact@v4
         with:
-          pattern: alsa-oneplus-aston*
+          pattern: alsa-xiaomi-elish*
       - uses: actions/download-artifact@v4
         with:
-          pattern: firmware-oneplus-aston-a${{ matrix.android }}*
+          pattern: firmware-xiaomi-elish-a${{ matrix.android }}*
       - uses: actions/download-artifact@v4
         with:
-          pattern: linux-oneplus-aston_${{ matrix.kernel }}
+          pattern: linux-xiaomi-elish_${{ matrix.kernel }}
       - name: Install Dependencies
         run: sudo apt update && sudo apt install unzip 7zip bash tar git wget dpkg
 

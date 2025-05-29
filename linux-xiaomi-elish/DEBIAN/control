@@ -1,0 +1,6 @@
+Package: linux-xiaomi-elish
+Version: 6.13.0
+Architecture: arm64
+Maintainer: alghiffaryfa19
+Section: kernel
+Description: Kernel and Modules for Xiaomi Pad 5 Pro

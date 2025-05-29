@@ -1,6 +1,0 @@
-Package: linux-oneplus-aston
-Version: 6.11.0-sm8550
-Architecture: arm64
-Maintainer: jiganomegsdfdf
-Section: kernel
-Description: Kernel and Modules for OnePlus 12R/Ace 3
