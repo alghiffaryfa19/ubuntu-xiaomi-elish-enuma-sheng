@@ -1,0 +1,4 @@
+# Soft dependencies extracted from modules themselves.
+softdep xts pre: ecb
+softdep ipmi_msghandler post: ipmi_devintf
+softdep xt_LOG pre: nf_log_syslog

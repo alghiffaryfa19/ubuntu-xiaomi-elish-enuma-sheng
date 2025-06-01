@@ -1,5 +1,5 @@
 Package: linux-xiaomi-elish
-Version: 6.13.0
+Version: 6.13.0-g7c6fcdb4d590
 Architecture: arm64
 Maintainer: alghiffaryfa19
 Section: kernel

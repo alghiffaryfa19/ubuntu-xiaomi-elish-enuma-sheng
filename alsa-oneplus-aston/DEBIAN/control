@@ -1,6 +1,0 @@
-Package: alsa-oneplus-aston
-Version: 1.0
-Architecture: arm64
-Maintainer: jiganomegsdfdf
-Depends: alsa-ucm-conf
-Description: Alsa Use Case Configuration for OnePlus 12R/Ace 3

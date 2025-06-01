@@ -1,7 +1,0 @@
-Package: firmware-oneplus-aston
-Version: 1.0-android15
-Architecture: arm64
-Maintainer: jiganomegsdfdf
-Conflicts: linux-firmware
-Replaces: linux-firmware
-Description: Firmware blobs & Configs for OnePlus 12R/Ace 3
