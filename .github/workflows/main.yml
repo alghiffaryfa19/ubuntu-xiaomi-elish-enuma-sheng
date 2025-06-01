@@ -107,7 +107,7 @@ jobs:
           path: ${{ github.workspace }}/device-xiaomi-elish.deb
 
   rootfs-packager:
-    needs: [kernel, alsa, firmware, device]
+    needs: [kernel, alsa, firmware, device-xiaomi-elish]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     strategy:
