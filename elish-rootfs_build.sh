@@ -19,9 +19,9 @@ mount -t tmpfs tmpfs rootdir/data/local/tmp
 mount --bind /sys rootdir/sys
 
 echo "nameserver 1.1.1.1" | tee rootdir/etc/resolv.conf
-echo "oneplus-aston" | tee rootdir/etc/hostname
+echo "xiaomi-elish" | tee rootdir/etc/hostname
 echo "127.0.0.1 localhost
-127.0.1.1 oneplus-aston" | tee rootdir/etc/hosts
+127.0.1.1 xiaomi-elish" | tee rootdir/etc/hosts
 
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:\$PATH
 export DEBIAN_FRONTEND=noninteractive
@@ -42,9 +42,9 @@ DeviceScale=2" | tee rootdir/etc/plymouth/plymouthd.conf
 echo "[org.gnome.desktop.interface]
 scaling-factor=2" | tee rootdir/usr/share/glib-2.0/schemas/93_hidpi.gschema.override
 
-echo "PARTLABEL=win / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir/etc/fstab
+echo "PARTLABEL=linux / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir/etc/fstab
 
-echo 'ACTION=="add", SUBSYSTEM=="misc", KERNEL=="udmabuf", TAG+="uaccess"' | tee rootdir/etc/udev/rules.d/99-oneplus-aston.rules
+echo 'ACTION=="add", SUBSYSTEM=="misc", KERNEL=="udmabuf", TAG+="uaccess"' | tee rootdir/etc/udev/rules.d/99-xiaomi-elish.rules
 
 chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
 

@@ -17,12 +17,14 @@ mount --bind /sys rootdir/sys
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:\$PATH
 export DEBIAN_FRONTEND=noninteractive
 
-find $1/.. -name 'alsa-oneplus-aston.deb' -exec cp "{}" $1/rootdir/  \;
-find $1/.. -name 'firmware-oneplus-aston*.deb' -exec cp "{}" $1/rootdir/  \;
-find $1/.. -name 'linux-oneplus-aston.deb' -exec cp "{}" $1/rootdir/  \;
-chroot rootdir dpkg -i alsa-oneplus-aston.deb
-chroot rootdir dpkg -i firmware-oneplus-aston-a$2.deb
-chroot rootdir dpkg -i linux-oneplus-aston.deb
+find $1/.. -name 'alsa-xiaomi-elish.deb' -exec cp "{}" $1/rootdir/  \;
+find $1/.. -name 'firmware-xiaomi-elish.deb' -exec cp "{}" $1/rootdir/  \;
+find $1/.. -name 'device-xiaomi-elish.deb' -exec cp "{}" $1/rootdir/  \;
+find $1/.. -name 'linux-xiaomi-elish.deb' -exec cp "{}" $1/rootdir/  \;
+chroot rootdir dpkg -i alsa-xiaomi-elish.deb
+chroot rootdir dpkg -i firmware-xiaomi-elish.deb
+chroot rootdir dpkg -i device-xiaomi-elish.deb
+chroot rootdir dpkg -i linux-xiaomi-elish.deb
 rm -rf $1/rootdir/*.deb
 
 umount rootdir/sys

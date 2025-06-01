@@ -17,7 +17,7 @@ jobs:
         run: sudo apt update && sudo apt install build-essential gcc-aarch64-linux-gnu bc flex bison 7zip kmod bash cpio binutils tar git wget dpkg libssl-dev python3 python-is-python3
 
       - name: Build kernel
-        run: sudo sh aston-kernel_build.sh ${{ github.workspace }} ${{ matrix.version }}
+        run: sudo sh elish-kernel_build.sh ${{ github.workspace }} ${{ matrix.version }}
 
       - name: Upload linux.deb
         uses: actions/upload-artifact@v4
@@ -37,90 +37,83 @@ jobs:
           name: boot-xiaomi-elish_${{ matrix.version }}_boe.img
           path: ${{ github.workspace }}/boot_boe.img
 
-  # rootfs:
-  #   runs-on: ubuntu-24.04-arm
-  #   timeout-minutes: 20
-  #   strategy:
-  #           matrix:
-  #               desktop: [ubuntu-desktop]
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Install Dependencies
-  #       run: sudo apt update && sudo apt install unzip bash tar git wget dpkg
+  rootfs:
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 20
+    strategy:
+            matrix:
+                desktop: [ubuntu-desktop]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: sudo apt update && sudo apt install unzip bash tar git wget dpkg
 
-  #     - name: Build rootfs
-  #       run: sudo sh aston-rootfs_build.sh ${{ matrix.desktop }} ${{ github.workspace }}
+      - name: Build rootfs
+        run: sudo sh elish-rootfs_build.sh ${{ matrix.desktop }} ${{ github.workspace }}
 
-  #     - name: Upload rootfs.img
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: between_${{ matrix.desktop }}
-  #         path: rootfs.7z
-  #         compression-level: 0
+      - name: Upload rootfs.img
+        uses: actions/upload-artifact@v4
+        with:
+          name: between_${{ matrix.desktop }}
+          path: rootfs.7z
+          compression-level: 0
 
-  # alsa:
-  #   needs: rootfs
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 2
-  #   steps:
-  #     - uses: actions/checkout@v4
+  alsa:
+    needs: rootfs
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Pack Alsa Use Case Configuration into .deb
-  #       run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-xiaomi-elish
+      - name: Pack Alsa Use Case Configuration into .deb
+        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-xiaomi-elish
 
-  #     - name: Upload alsa.deb
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: alsa-xiaomi-elish
-  #         path: ${{ github.workspace }}/alsa-xiaomi-elish.deb
+      - name: Upload alsa.deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: alsa-xiaomi-elish
+          path: ${{ github.workspace }}/alsa-xiaomi-elish.deb
+  
+  firmware:
+    needs: rootfs
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
 
-  # firmware-a15:
-  #   needs: rootfs
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 2
-  #   steps:
-  #     - uses: actions/checkout@v4
+      - name: Pack firmware into .deb
+        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group firmware-xiaomi-elish
 
-  #     - name: Install Dependencies
-  #       run: sudo apt update && sudo apt install gcc make git wget dpkg
+      - name: Upload firmware.deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware-xiaomi-elish
+          path: ${{ github.workspace }}/firmware-xiaomi-elish.deb
 
-  #     - name: Squash firmwares to .mbn
-  #       run: sudo sh aston-fw_squasher-a15.sh ${{ github.workspace }}
+  device-xiaomi-elish:
+    needs: rootfs
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - name: Upload firmware.deb
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: firmware-xiaomi-elish-a15
-  #         path: ${{ github.workspace }}/firmware-xiaomi-elish-a15.deb
+      - name: Pack device into .deb
+        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group device-xiaomi-elish
 
-  # firmware-a14:
-  #   needs: rootfs
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 2
-  #   steps:
-  #     - uses: actions/checkout@v4
+      - name: Upload device.deb
+        uses: actions/upload-artifact@v4
+        with:
+          name: device-xiaomi-elish
+          path: ${{ github.workspace }}/device-xiaomi-elish.deb
 
-  #     - name: Install Dependencies
-  #       run: sudo apt update && sudo apt install gcc make git wget dpkg
-
-  #     - name: Squash firmwares to .mbn
-  #       run: sudo sh aston-fw_squasher-a14.sh ${{ github.workspace }}
-
-  #     - name: Upload firmware.deb
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: firmware-xiaomi-elish-a14
-  #         path: ${{ github.workspace }}/firmware-xiaomi-elish-a14.deb
-
-  # rootfs-packager:
-    needs: [kernel, alsa, firmware-a14, firmware-a15]
+  rootfs-packager:
+    needs: [kernel, alsa, firmware, device]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     strategy:
             matrix:
                 desktop: [ubuntu-desktop]
-                kernel: [6.14]
-                android: [14,15]
+                kernel: [6.13.0]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -131,7 +124,7 @@ jobs:
           pattern: alsa-xiaomi-elish*
       - uses: actions/download-artifact@v4
         with:
-          pattern: firmware-xiaomi-elish-a${{ matrix.android }}*
+          pattern: firmware-xiaomi-elish
       - uses: actions/download-artifact@v4
         with:
           pattern: linux-xiaomi-elish_${{ matrix.kernel }}
@@ -139,12 +132,12 @@ jobs:
         run: sudo apt update && sudo apt install unzip 7zip bash tar git wget dpkg
 
       - name: Package rootfs
-        run: sudo sh aston-rootfs_package.sh ${{ github.workspace }} ${{ matrix.android }}
+        run: sudo sh elish-rootfs_package.sh ${{ github.workspace }}
         
       - name: Upload rootfs.7z
         uses: actions/upload-artifact@v4
         with:
-          name: rootfs_${{ matrix.desktop }}_${{ matrix.kernel }}_A${{ matrix.android }}
+          name: rootfs_${{ matrix.desktop }}_${{ matrix.kernel }}
           path: rootfs.7z
           compression-level: 0
           
