@@ -1,4 +1,4 @@
-name: rootfs
+name: rootfs-sheng
 
 on:
   workflow_dispatch:
