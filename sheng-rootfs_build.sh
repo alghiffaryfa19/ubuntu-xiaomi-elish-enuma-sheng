@@ -19,9 +19,9 @@ mount -t tmpfs tmpfs rootdir/data/local/tmp
 mount --bind /sys rootdir/sys
 
 echo "nameserver 1.1.1.1" | tee rootdir/etc/resolv.conf
-echo "xiaomi-elish" | tee rootdir/etc/hostname
+echo "xiaomi-sheng" | tee rootdir/etc/hostname
 echo "127.0.0.1 localhost
-127.0.1.1 xiaomi-elish" | tee rootdir/etc/hosts
+127.0.1.1 xiaomi-sheng" | tee rootdir/etc/hosts
 
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:\$PATH
 export DEBIAN_FRONTEND=noninteractive
@@ -44,7 +44,7 @@ scaling-factor=2" | tee rootdir/usr/share/glib-2.0/schemas/93_hidpi.gschema.over
 
 echo "PARTLABEL=linux / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir/etc/fstab
 
-echo 'ACTION=="add", SUBSYSTEM=="misc", KERNEL=="udmabuf", TAG+="uaccess"' | tee rootdir/etc/udev/rules.d/99-xiaomi-elish.rules
+echo 'ACTION=="add", SUBSYSTEM=="misc", KERNEL=="udmabuf", TAG+="uaccess"' | tee rootdir/etc/udev/rules.d/99-xiaomi-sheng.rules
 
 chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
 

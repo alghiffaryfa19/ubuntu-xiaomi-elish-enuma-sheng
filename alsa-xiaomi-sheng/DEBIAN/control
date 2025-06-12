@@ -1,6 +1,6 @@
-Package: alsa-xiaomi-elish
+Package: alsa-xiaomi-sheng
 Version: 1.0
 Architecture: arm64
 Maintainer: alghiffaryfa19
 Depends: alsa-ucm-conf
-Description: Alsa Use Case Configuration for Xiaomi Pad 5 Pro
+Description: Alsa Use Case Configuration for Xiaomi Pad 6s Pro

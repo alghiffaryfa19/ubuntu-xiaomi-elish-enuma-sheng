@@ -1,7 +1,7 @@
-Package: firmware-xiaomi-elish
+Package: firmware-xiaomi-sheng
 Version: 1.0
 Architecture: arm64
 Maintainer: alghiffaryfa19
 Conflicts: linux-firmware
 Replaces: linux-firmware
-Description: Firmware blobs & Configs for Xiaomi Pad 5 Pro
+Description: Firmware blobs & Configs for Xiaomi Pad 6s Pro

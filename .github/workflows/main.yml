@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 20
     strategy:
             matrix:
-                version: [6.13.0]
+                version: [6.15]
     steps:
       - uses: actions/checkout@v4
 
@@ -17,25 +17,19 @@ jobs:
         run: sudo apt update && sudo apt install build-essential gcc-aarch64-linux-gnu bc flex bison 7zip kmod bash cpio binutils tar git wget dpkg libssl-dev python3 python-is-python3
 
       - name: Build kernel
-        run: sudo sh elish-kernel_build.sh ${{ github.workspace }} ${{ matrix.version }}
+        run: sudo sh sheng-kernel_build.sh ${{ github.workspace }} ${{ matrix.version }}
 
       - name: Upload linux.deb
         uses: actions/upload-artifact@v4
         with:
-          name: linux-xiaomi-elish_${{ matrix.version }}
-          path: ${{ github.workspace }}/linux-xiaomi-elish.deb
+          name: linux-xiaomi-sheng_${{ matrix.version }}
+          path: ${{ github.workspace }}/linux-xiaomi-sheng.deb
 
-      - name: Upload CSOT boot.img
+      - name: Upload boot.img
         uses: actions/upload-artifact@v4
         with:
-          name: boot-xiaomi-elish_${{ matrix.version }}_csot.img
-          path: ${{ github.workspace }}/boot_csot.img
-
-      - name: Upload BOE boot.img
-        uses: actions/upload-artifact@v4
-        with:
-          name: boot-xiaomi-elish_${{ matrix.version }}_boe.img
-          path: ${{ github.workspace }}/boot_boe.img
+          name: boot-xiaomi-sheng_${{ matrix.version }}.img
+          path: ${{ github.workspace }}/boot.img
 
   rootfs:
     runs-on: ubuntu-24.04-arm
@@ -49,7 +43,7 @@ jobs:
         run: sudo apt update && sudo apt install unzip bash tar git wget dpkg
 
       - name: Build rootfs
-        run: sudo sh elish-rootfs_build.sh ${{ matrix.desktop }} ${{ github.workspace }}
+        run: sudo sh sheng-rootfs_build.sh ${{ matrix.desktop }} ${{ github.workspace }}
 
       - name: Upload rootfs.img
         uses: actions/upload-artifact@v4
@@ -66,13 +60,13 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Pack Alsa Use Case Configuration into .deb
-        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-xiaomi-elish
+        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group alsa-xiaomi-sheng
 
       - name: Upload alsa.deb
         uses: actions/upload-artifact@v4
         with:
-          name: alsa-xiaomi-elish
-          path: ${{ github.workspace }}/alsa-xiaomi-elish.deb
+          name: alsa-xiaomi-sheng
+          path: ${{ github.workspace }}/alsa-xiaomi-sheng.deb
   
   firmware:
     needs: rootfs
@@ -82,15 +76,15 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Pack firmware into .deb
-        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group firmware-xiaomi-elish
+        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group firmware-xiaomi-sheng
 
       - name: Upload firmware.deb
         uses: actions/upload-artifact@v4
         with:
-          name: firmware-xiaomi-elish
-          path: ${{ github.workspace }}/firmware-xiaomi-elish.deb
+          name: firmware-xiaomi-sheng
+          path: ${{ github.workspace }}/firmware-xiaomi-sheng.deb
 
-  device-xiaomi-elish:
+  device-xiaomi-sheng:
     needs: rootfs
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -98,16 +92,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Pack device into .deb
-        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group device-xiaomi-elish
+        run: cd ${{ github.workspace }} && dpkg-deb --build --root-owner-group device-xiaomi-sheng
 
       - name: Upload device.deb
         uses: actions/upload-artifact@v4
         with:
-          name: device-xiaomi-elish
-          path: ${{ github.workspace }}/device-xiaomi-elish.deb
+          name: device-xiaomi-sheng
+          path: ${{ github.workspace }}/device-xiaomi-sheng.deb
 
   rootfs-packager:
-    needs: [kernel, alsa, firmware, device-xiaomi-elish]
+    needs: [kernel, alsa, firmware, device-xiaomi-sheng]
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 10
     strategy:
@@ -121,18 +115,18 @@ jobs:
           pattern: between_${{ matrix.desktop }}*   
       - uses: actions/download-artifact@v4
         with:
-          pattern: alsa-xiaomi-elish*
+          pattern: alsa-xiaomi-sheng*
       - uses: actions/download-artifact@v4
         with:
-          pattern: firmware-xiaomi-elish
+          pattern: firmware-xiaomi-sheng
       - uses: actions/download-artifact@v4
         with:
-          pattern: linux-xiaomi-elish_${{ matrix.kernel }}
+          pattern: linux-xiaomi-sheng_${{ matrix.kernel }}
       - name: Install Dependencies
         run: sudo apt update && sudo apt install unzip 7zip bash tar git wget dpkg
 
       - name: Package rootfs
-        run: sudo sh elish-rootfs_package.sh ${{ github.workspace }}
+        run: sudo sh sheng-rootfs_package.sh ${{ github.workspace }}
         
       - name: Upload rootfs.7z
         uses: actions/upload-artifact@v4
