@@ -1,18 +1,16 @@
-<!-- <img align="right" src="ubnt.png" width="305" alt="Ubuntu Running On Xiaomi Pad 5 Pro"> -->
+<!-- <img align="right" src="ubnt.png" width="305" alt="Ubuntu Running On Xiaomi Pad 6s Pro"> -->
 
-# Ubuntu for Xiaomi Pad 5 Pro
-This repo contians **Base Guide for installation/upgrading** and **Scripts for automatic building of Ubuntu RootFS, Mainline Kernel, Firmware package, ALSA configs** for Xiaomi Pad 5 Pro
-
-### [**Project status**](https://wiki-postmarketos-org.translate.goog/wiki/Xiaomi_Mi_Pad_5_Pro_(xiaomi-elish)?_x_tr_sl=en&_x_tr_tl=id&_x_tr_hl=id&_x_tr_pto=tc)
+# Ubuntu for Xiaomi Pad 6s Pro
+This repo contians **Base Guide for installation/upgrading** and **Scripts for automatic building of Ubuntu RootFS, Mainline Kernel, Firmware package, ALSA configs** for Xiaomi Pad 6s Pro
 
 # Where do I get the needed files?
-Just go to the "Actions" tab, open the latest build and download files named **rootfs_(Desktop Environment)_(Kernel version)** and **boot-xiaomi-elish_(Kernel version).img**
+Just go to the "Actions" tab, open the latest build and download files named **rootfs_(Desktop Environment)_(Kernel version)** and **boot-xiaomi-sheng_(Kernel version).img**
 <br>For upgrading - download all available files, **except for rootfs**
 
 ## Upgrading steps (From running Ubuntu)
 - Unpack all the .zip files you downloaded into one folder
 - Open terminal and go to the folder where you unpacked all .zip files into
-- Run "sudo dpkg -i *-xiaomi-elish.deb"
+- Run "sudo dpkg -i *-xiaomi-sheng.deb"
 - If you use flashing instead of **fastboot boot**: flash a new boot image using "dd if="**path to boot.img**" of=/dev/disk/by-partlabel/boot_**('a' or 'b')**"
 - Reboot using new image
 
