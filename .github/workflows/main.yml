@@ -107,7 +107,7 @@ jobs:
     strategy:
             matrix:
                 desktop: [ubuntu-desktop]
-                kernel: [6.13.0]
+                kernel: [6.15]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
