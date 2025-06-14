@@ -42,7 +42,7 @@ DeviceScale=2" | tee rootdir/etc/plymouth/plymouthd.conf
 echo "[org.gnome.desktop.interface]
 scaling-factor=2" | tee rootdir/usr/share/glib-2.0/schemas/93_hidpi.gschema.override
 
-echo "PARTLABEL=linux / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir/etc/fstab
+echo "PARTLABEL=userdata / ext4 errors=remount-ro,x-systemd.growfs 0 1" | tee rootdir/etc/fstab
 
 echo 'ACTION=="add", SUBSYSTEM=="misc", KERNEL=="udmabuf", TAG+="uaccess"' | tee rootdir/etc/udev/rules.d/99-xiaomi-sheng.rules
 
