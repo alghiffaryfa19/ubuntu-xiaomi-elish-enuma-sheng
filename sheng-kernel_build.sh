@@ -1,8 +1,6 @@
 cd $1
-git clone https://github.com/map220v/sm8550-mainline --depth 1 linux --branch sheng-$2
+git clone https://github.com/alghiffaryfa19/sm8550-mainline --depth 1 linux --branch sheng-$2-nanosic
 cd linux
-wget https://github.com/user-attachments/files/20585999/nanosic.patch
-git apply nanosic.patch
 
 make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig sm8550.config
 make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
