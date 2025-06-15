@@ -51,8 +51,6 @@ chroot rootdir glib-compile-schemas /usr/share/glib-2.0/schemas
 mkdir rootdir/var/lib/gdm
 touch rootdir/var/lib/gdm/run-initial-setup
 
-chroot rootdir pw-metadata -n settings 0 clock.force-quantum 2048
-
 chroot rootdir apt clean
 
 umount rootdir/sys
