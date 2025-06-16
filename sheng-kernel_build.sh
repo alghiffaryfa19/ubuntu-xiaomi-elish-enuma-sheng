@@ -1,5 +1,5 @@
 cd $1
-git clone https://github.com/alghiffaryfa19/sm8550-mainline --depth 1 linux --branch sheng-$2-nanosic
+git clone https://github.com/alghiffaryfa19/sm8550-mainline --depth 1 linux --branch sheng-$2-nanosic-led
 cd linux
 
 make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig sm8550.config
