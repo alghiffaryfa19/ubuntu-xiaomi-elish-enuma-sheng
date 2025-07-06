@@ -1,4 +1,4 @@
-name: rootfs_elish
+name: rootfs
 
 on:
   workflow_dispatch:
