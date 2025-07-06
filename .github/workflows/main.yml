@@ -106,7 +106,7 @@ jobs:
     timeout-minutes: 10
     strategy:
             matrix:
-                desktop: [ubuntu-desktop]
+                desktop: [lomiri-desktop-session]
                 kernel: [6.15]
     steps:
       - uses: actions/checkout@v4
