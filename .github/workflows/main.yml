@@ -36,7 +36,7 @@ jobs:
     timeout-minutes: 20
     strategy:
             matrix:
-                desktop: [lomiri-desktop-session]
+                desktop: [lomiri]
     steps:
       - uses: actions/checkout@v4
       - name: Install Dependencies
@@ -106,7 +106,7 @@ jobs:
     timeout-minutes: 10
     strategy:
             matrix:
-                desktop: [lomiri-desktop-session]
+                desktop: [lomiri]
                 kernel: [6.15]
     steps:
       - uses: actions/checkout@v4
