@@ -34,7 +34,7 @@ echo "#!/bin/bash
 exit 0" | tee rootdir/var/lib/dpkg/info/python3-defer.postinst
 chroot rootdir dpkg --configure python3-defer
 
-chroot rootdir apt install -y bash-completion sudo ssh nano rmtfs qrtr-tools u-boot-tools- cloud-init- wireless-regdb- libreoffice*- transmission*- remmina*- $1
+chroot rootdir apt install -y bash-completion sudo ssh nano gdm3 rmtfs qrtr-tools u-boot-tools- cloud-init- wireless-regdb- transmission*- remmina*- $1
 
 echo "[Daemon]
 DeviceScale=2" | tee rootdir/etc/plymouth/plymouthd.conf
