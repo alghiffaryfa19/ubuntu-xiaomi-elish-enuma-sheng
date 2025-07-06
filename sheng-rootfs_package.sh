@@ -14,19 +14,30 @@ mount --bind /proc rootdir/proc
 mount -t tmpfs tmpfs rootdir/data/local/tmp
 mount --bind /sys rootdir/sys
 
-export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:\$PATH
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 export DEBIAN_FRONTEND=noninteractive
 
-find $1/.. -name 'alsa-xiaomi-sheng.deb' -exec cp "{}" $1/rootdir/  \;
-find $1/.. -name 'firmware-xiaomi-sheng.deb' -exec cp "{}" $1/rootdir/  \;
-find $1/.. -name 'device-xiaomi-sheng.deb' -exec cp "{}" $1/rootdir/  \;
-find $1/.. -name 'linux-xiaomi-sheng.deb' -exec cp "{}" $1/rootdir/  \;
-chroot rootdir dpkg -i alsa-xiaomi-sheng.deb
-chroot rootdir dpkg -i firmware-xiaomi-sheng.deb
-chroot rootdir dpkg -i device-xiaomi-sheng.deb
-chroot rootdir dpkg -i linux-xiaomi-sheng.deb
+# Salin file .deb ke rootfs
+find $1/.. -name 'alsa-xiaomi-elish.deb' -exec cp "{}" $1/rootdir/  \;
+find $1/.. -name 'firmware-xiaomi-elish.deb' -exec cp "{}" $1/rootdir/  \;
+find $1/.. -name 'device-xiaomi-elish.deb' -exec cp "{}" $1/rootdir/  \;
+find $1/.. -name 'linux-xiaomi-elish.deb' -exec cp "{}" $1/rootdir/  \;
+
+# Install paket-paket .deb
+chroot rootdir dpkg -i alsa-xiaomi-elish.deb
+chroot rootdir dpkg -i firmware-xiaomi-elish.deb
+chroot rootdir dpkg -i device-xiaomi-elish.deb
+chroot rootdir dpkg -i linux-xiaomi-elish.deb
 rm -rf $1/rootdir/*.deb
 
+# 🚀 Tambahkan user 'ubuntu' dengan password '147147'
+chroot rootdir /bin/bash -c "
+useradd -m -s /bin/bash ubuntu
+echo 'ubuntu:147147' | chpasswd
+usermod -aG sudo ubuntu
+"
+
+# Bersihkan dan unmount
 umount rootdir/sys
 umount rootdir/proc
 umount rootdir/dev/pts
