@@ -8,8 +8,9 @@ mkfs.ext4 rootfs.img
 mkdir rootdir
 mount -o loop rootfs.img rootdir
 
-wget https://cdimage.ubuntu.com/ubuntu-base/releases/$VERSION/release/ubuntu-base-$VERSION-base-arm64.tar.gz
-tar xzvf ubuntu-base-$VERSION-base-arm64.tar.gz -C rootdir
+mirror="http://deb.debian.org/debian/"
+echo "🔗 使用镜像源: $mirror"
+echo "执行命令: sudo debootstrap --arch=arm64 trixie rootdir $mirror"
 
 mkdir -p rootdir/data/local/tmp
 mount --bind /dev rootdir/dev
