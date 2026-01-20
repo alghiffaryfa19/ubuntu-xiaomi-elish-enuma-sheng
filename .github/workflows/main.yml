@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 20
     strategy:
             matrix:
-                version: [6.15]
+                version: [6.18]
     steps:
       - uses: actions/checkout@v4
 
@@ -107,7 +107,7 @@ jobs:
     strategy:
             matrix:
                 desktop: [lomiri]
-                kernel: [6.15]
+                kernel: [6.18]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
