@@ -5,7 +5,7 @@ on:
 
 jobs:
   kernel:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-25.10-arm
     timeout-minutes: 20
     strategy:
             matrix:
@@ -32,11 +32,11 @@ jobs:
           path: ${{ github.workspace }}/boot_sheng.img
 
   rootfs:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-25.10-arm
     timeout-minutes: 20
     strategy:
             matrix:
-                desktop: [lomiri]
+                desktop: [gnome]
     steps:
       - uses: actions/checkout@v4
       - name: Install Dependencies
@@ -102,11 +102,11 @@ jobs:
 
   rootfs-packager:
     needs: [kernel, alsa, firmware, device-xiaomi-sheng]
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-25.10-arm
     timeout-minutes: 10
     strategy:
             matrix:
-                desktop: [lomiri]
+                desktop: [gnome]
                 kernel: [6.18]
     steps:
       - uses: actions/checkout@v4
@@ -139,7 +139,7 @@ jobs:
           compression-level: 0
           
   cleaner:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-25.10-arm
     needs: rootfs-packager
     steps:
       - uses: geekyeggo/delete-artifact@v5

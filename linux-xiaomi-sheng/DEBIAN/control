@@ -1,6 +1,6 @@
 Package: linux-xiaomi-sheng
-Version: 6.15.0
+Version: 6.18.0
 Architecture: arm64
-Maintainer: alghiffaryfa19
+Maintainer: map220v
 Section: kernel
 Description: Kernel and Modules for Xiaomi Pad 6s Pro

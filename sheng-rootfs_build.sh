@@ -1,5 +1,5 @@
 #!/bin/sh
-VERSION="25.04"
+VERSION="25.10"
 
 cd $2
 
@@ -8,9 +8,8 @@ mkfs.ext4 rootfs.img
 mkdir rootdir
 mount -o loop rootfs.img rootdir
 
-mirror="http://deb.debian.org/debian/"
-echo "🔗 使用镜像源: $mirror"
-echo "执行命令: sudo debootstrap --arch=arm64 trixie rootdir $mirror"
+wget https://cdimage.ubuntu.com/ubuntu-base/releases/$VERSION/release/ubuntu-base-$VERSION-base-arm64.tar.gz
+tar xzvf ubuntu-base-$VERSION-base-arm64.tar.gz -C rootdir
 
 mkdir -p rootdir/data/local/tmp
 mount --bind /dev rootdir/dev
