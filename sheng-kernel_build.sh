@@ -2,9 +2,7 @@ cd $1
 git clone https://github.com/map220v/sm8550-mainline --depth 1 linux --branch sheng-6.18
 cd linux
 
-wget -O arch/arm64/configs/sheng.config https://gitlab.postmarketos.org/alghiffaryfa19/pmaports/-/raw/sheng/device/testing/linux-postmarketos-qcom-sm8550/config-postmarketos-qcom-sm8550.aarch64
-
-make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig sheng.config
+make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- defconfig sm8550.config
 make -j$(nproc) ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu-
 _kernel_version="$(make kernelrelease -s)"
 sed -i "s/Version:.*/Version: ${_kernel_version}/" $1/linux-xiaomi-sheng/DEBIAN/control
